@@ -159,6 +159,9 @@ My name is **Mohamed Abdelrahman**.
 I am a cybersecurity enthusiast focused on:
 
 * Malware behavior analysis
+* Focus on developing malware
+* Focus on teaching how to develop malware securely
+* Focus on teaching hacking in secure environments
 * Understanding attacker logic
 * Building strong defensive knowledge
 

@@ -1,73 +1,169 @@
 # SentinelCore
-
-## Introduction
-
-SentinelCore is a purely educational project aimed at simulating some common malware behaviors in a safe, limited, and non-harmful way. The main purpose of this project is understanding, analysis, and learning: how such behaviors work from a theoretical perspective, and how they can be detected or analyzed by security systems and researchers.
-
-This project is not intended to harm any system, does not provide real offensive tools, and must not be used outside a personal, authorized testing environment.
+Malware Behavior Simulation for Analysis & Educational Development
 
 ---
 
-## Project Objectives
+## Overview
 
-* Understand the core concepts behind common malware behaviors.
-* Learn how to write code that simulates these behaviors without actually executing them.
-* Help beginners in cybersecurity bridge the gap between theory and practical implementation.
-* Train security researchers to read code and analyze the potential intent behind it.
+SentinelCore is an educational cybersecurity project focused on **understanding malware behavior by simulating it safely**.  
+Instead of using real malware or dangerous tools, this project demonstrates *how such behaviors are designed* and *how they appear to the operating system*, allowing learners and researchers to analyze them without risk.
 
----
+The project is built to support both:
+- **Malware Analysis**
+- **Malware Development (Educational & Controlled)**
 
-## What Does SentinelCore Do?
-
-The project only simulates limited educational behaviors, such as:
-
-* Simulating the concept of persistence using the Windows Registry without creating autorun entries or any real impact.
-* Simulating a local network connection (localhost only) without sending or receiving data.
-
-All of these behaviors are:
-
-* Disabled by default.
-* Only activated manually at compile time.
-* Non-dangerous to the system.
+No real malicious activity is performed. Everything is explicit, transparent, and disabled by default.
 
 ---
 
-## What Does the Project NOT Do?
+## Why SentinelCore Exists
 
-SentinelCore does NOT:
+Most people study malware by:
+- Reading theory only, or
+- Running unknown samples in sandboxes
 
-* Create real malware.
-* Establish Command-and-Control (C2) connections.
-* Execute remote commands.
-* Spread across a network.
-* Install itself automatically on the system.
-* Bypass security protections.
+SentinelCore takes a different approach:
+You **build and read the logic yourself**.
 
-All code in this project remains strictly within the scope of educational simulation.
-
----
-
-## Warnings and Responsible Use
-
-* Use this project only on your personal device or in an isolated testing environment.
-* Do not run or modify the code on systems you do not explicitly own or have permission to test.
-* Any use outside the educational or research scope is solely the user's responsibility.
-* This project is intended for learning, not for any illegal activity.
+By understanding how malware-like behaviors are written at code level, you gain:
+- Better analysis skills
+- Stronger defensive thinking
+- Clear insight into detection logic
 
 ---
 
-## Requirements
+## What the Code Demonstrates
 
-* Windows operating system.
-* A C compiler that supports the Windows API, such as MSVC.
-* Basic knowledge of the C programming language.
-* Interest in cybersecurity and malware analysis.
+SentinelCore simulates common malware concepts in a **safe and limited form**.
+
+### 1. Persistence (Simulation)
+
+The code demonstrates how persistence *conceptually* works by:
+- Writing a harmless test value
+- Using `HKEY_CURRENT_USER` only
+- Avoiding startup locations
+- Never executing or loading anything
+
+This allows the reader to understand:
+- Why registry-based persistence exists
+- How it is typically implemented
+- How security tools monitor such behavior
 
 ---
 
-## Build Instructions (Compile)
+### 2. Network Behavior (Simulation)
 
-By default, all simulations are disabled.
+The network simulation demonstrates:
+- Socket creation
+- Connection logic
+- Typical malware network flow
 
-To compile without enabling any simulation:
+Key limitations:
+- Connection is **localhost only (127.0.0.1)**
+- No data is sent
+- No data is received
+- No remote control
+- No command execution
 
+The purpose is to show **structure and intent**, not exploitation.
+
+---
+
+## Safety by Design
+
+SentinelCore is intentionally built with safety controls:
+
+- All simulations are **disabled by default**
+- Behavior must be explicitly enabled at compile time
+- No obfuscation
+- No hidden logic
+- No persistence outside user scope
+- No real attack surface
+
+This makes the project suitable for:
+- Learning
+- Teaching
+- Code review
+- Malware analysis practice
+
+---
+
+## Example Code Concept
+
+```c
+#if ENABLE_SIM_PERSISTENCE
+HKEY hKey;
+if (RegCreateKeyA(
+        HKEY_CURRENT_USER,
+        "Software\\SentinelCore\\Simulation",
+        &hKey
+    ) == ERROR_SUCCESS)
+{
+    const char* value = "test.exe";
+
+    RegSetValueExA(
+        hKey,
+        "SimulatedPayload",
+        0,
+        REG_SZ,
+        (const BYTE*)value,
+        (DWORD)(strlen(value) + 1)
+    );
+
+    RegCloseKey(hKey);
+    printf("[SIM] Registry simulation completed.\n");
+}
+#endif
+````
+
+This snippet demonstrates:
+
+* Registry interaction
+* Safe persistence modeling
+* Clear detection points
+* Transparent logic
+
+Nothing is executed. Nothing is hidden.
+
+---
+
+## Project Structure
+
+```
+SentinelCore/
+│
+├── src/
+│   ├── simulator.c        // English comments
+│   ├── simulator_ar.c     // Arabic comments
+│
+├── README.md              // Project landing page
+├── README_AR.md           // Full Arabic documentation
+```
+
+---
+
+## Who This Project Is For
+
+* Cybersecurity beginners
+* Malware analysis students
+* Security researchers
+* Developers curious about malware internals
+* Anyone who wants to understand *how malware logic works* without using real malware
+
+---
+
+## About the Author
+
+My name is **Mohamed Abdelrahman**.
+
+I am a cybersecurity enthusiast focused on:
+
+* Malware behavior analysis
+* Understanding attacker logic
+* Building strong defensive knowledge
+
+SentinelCore is part of my learning journey, created to:
+
+* Study malware logic responsibly
+* Share knowledge clearly
+* Encourage ethical learning in cybersecurity
